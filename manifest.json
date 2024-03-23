@@ -1,0 +1,17 @@
+{
+  "author": "igorlogius",
+  "browser_action": {},
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "icons": {
+    "512": "icon.png"
+  },
+  "manifest_version": 2,
+  "name": "Gather from Tabs",
+  "options_ui": {
+    "page": "options.html"
+  },
+  "permissions": ["<all_urls>", "storage", "menus", "clipboardWrite", "tabs"],
+  "version": "1.0.1"
+}
