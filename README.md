@@ -1,5 +1,9 @@
 Gather information from multiple tabs, by using a small snippet of javascript
 
+<b>Short Demo Video:</b>
+
+https://github.com/igorlogius/gather-from-tabs/assets/67047467/e65d02d4-1311-40dc-b70d-3c8ed232388d
+
 <b>Usage</b>
 <ol>
   <li>Open the option page and create a fitting action (jaascript snippet)</li>
