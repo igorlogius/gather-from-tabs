@@ -4,6 +4,25 @@ const re_quote = new RegExp('"', "gm");
 const re_break = new RegExp(/(\r\n|\n|\r)/, "gm");
 const re_space = new RegExp(/\s+/, "gm");
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+async function notify(message = "", iconUrl = "icon.png", closeTimeout = 3000) {
+  try {
+    const manifest = browser.runtime.getManifest();
+    const title = manifest.name;
+
+    return await browser.notifications.create("" + Date.now(), {
+      type: "basic",
+      iconUrl,
+      title,
+      message,
+    });
+  } catch (e) {
+    console.debug(e);
+  }
+  return null;
+}
+
 async function getFromStorage(type, id, fallback) {
   let tmp = await browser.storage.local.get(id);
   return typeof tmp[id] === type ? tmp[id] : fallback;
@@ -19,6 +38,10 @@ async function onStorageChange() {
       title: row.name,
       contexts: ["tab"],
       onclick: async (info) => {
+        let nid = await notify("Processing ... ");
+
+        await sleep(3000);
+
         let tmp = "";
         let out = "";
         const code = row.code;
@@ -45,6 +68,11 @@ async function onStorageChange() {
           out = tmp + "\r\n" + out;
         }
         navigator.clipboard.writeText(out);
+        browser.notifications.clear(nid);
+        nid = await notify("Done!\nUse CTRL+V to past the gathered data");
+        setTimeout(() => {
+          browser.notifications.clear(nid);
+        }, 6000);
       },
     });
   }

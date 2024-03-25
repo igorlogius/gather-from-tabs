@@ -13,5 +13,6 @@
     "page": "options.html"
   },
   "permissions": ["<all_urls>", "storage", "menus", "clipboardWrite", "tabs"],
-  "version": "1.0.1"
+  "optional_permissions": ["notifications"],
+  "version": "1.0.2"
 }
