@@ -17,5 +17,5 @@
   },
   "permissions": ["<all_urls>", "storage", "menus", "clipboardWrite", "tabs"],
   "optional_permissions": ["notifications"],
-  "version": "1.0.3"
+  "version": "1.0.4"
 }

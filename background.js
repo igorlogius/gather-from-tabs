@@ -6,6 +6,8 @@ const re_space = new RegExp(/\s+/, "gm");
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+let multipletabshighlighted = false;
+
 async function notify(message = "", iconUrl = "icon.png", closeTimeout = 3000) {
   try {
     const manifest = browser.runtime.getManifest();
@@ -18,7 +20,7 @@ async function notify(message = "", iconUrl = "icon.png", closeTimeout = 3000) {
       message,
     });
   } catch (e) {
-    console.debug(e);
+    // noop
   }
   return null;
 }
@@ -37,7 +39,7 @@ async function onStorageChange() {
     browser.menus.create({
       title: row.name,
       contexts: ["tab"],
-      onclick: async (info) => {
+      onclick: async (info, clickedOnTab) => {
         let nid = await notify("Processing ... ");
 
         await sleep(3000);
@@ -49,10 +51,14 @@ async function onStorageChange() {
         //out = "idx,url,data";
         out = "";
 
-        for (const tab of await browser.tabs.query({
-          currentWindow: true,
-          highlighted: true,
-        })) {
+        const tabs = multipletabshighlighted
+          ? await browser.tabs.query({
+              currentWindow: true,
+              highlighted: true,
+            })
+          : [clickedOnTab];
+
+        for (const tab of tabs) {
           try {
             tmp = await browser.tabs.executeScript(tab.id, {
               code: `${code}`,
@@ -108,6 +114,13 @@ async function handleInstalled(details) {
     browser.runtime.openOptionsPage();
   }
 }
+
+function handleHighlighted(highlightInfo) {
+  //console.debug(`Highlighted tabs: ${highlightInfo.tabIds}`);
+  multipletabshighlighted = highlightInfo.tabIds.length > 1;
+}
+
+browser.tabs.onHighlighted.addListener(handleHighlighted);
 
 browser.runtime.onInstalled.addListener(handleInstalled);
 
