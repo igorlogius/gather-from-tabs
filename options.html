@@ -1,35 +1,40 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-  </head>
-  <body style="background: lightgray">
-    <form id="mainForm" accept-charset="utf-8">
-      <input type="submit" value="Save changes" />
-      <input
-        id="impbtn_wrapper"
-        type="button"
-        name="impbtn"
-        value="Import Rules"
-      />
-      <input
-        id="impbtn"
-        type="file"
-        name="impbtn"
-        value=""
-        style="display: none"
-      />
-      <input id="expbtn" type="button" name="impbtn" value="Export Rules" />
-      <p></p>
-      <table id="mainTable" border="1" style="width: 100%">
-        <thead>
-          <th style="width: 30%">Name</th>
-          <th>Code</th>
-          <th style="width: 0px">Action</th>
-        </thead>
-        <tbody id="mainTableBody" />
-      </table>
-    </form>
-    <script src="options.js"></script>
-  </body>
-</html>
+<head>
+  <meta charset="utf-8" />
+</head>
+<body style="background: lightgray;">
+  <form id="mainForm" accept-charset="utf-8">
+    <fieldset>
+    <input type="submit" value="Save changes"
+      style="float:right;"
+
+/>
+    <input
+      id="impbtn_wrapper"
+      type="button"
+      name="impbtn"
+      value="Import"
+    />
+    <input
+      id="impbtn"
+      type="file"
+      name="impbtn"
+      value=""
+      style="display: none"
+    />
+    <input id="expbtn" type="button" name="impbtn" value="Export"
+/>
+    </fieldset>
+    <fieldset>
+    <table id="mainTable" border="1" style="width: 100%">
+      <thead>
+        <th style="width: 30%">Name</th>
+        <th>Code</th>
+        <th style="width: 0px">Action</th>
+      </thead>
+      <tbody id="mainTableBody" />
+    </table>
+    </fieldset>
+  </form>
+  <script src="options.js"></script>
+</body>

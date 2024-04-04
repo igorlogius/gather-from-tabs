@@ -1,5 +1,6 @@
 {
   "author": "igorlogius",
+  "homepage_url": "https://github.com/igorlogius",
   "browser_action": {
     "default_area": "navbar",
     "default_popup": "options.html"
@@ -17,5 +18,5 @@
   },
   "permissions": ["<all_urls>", "storage", "menus", "clipboardWrite", "tabs"],
   "optional_permissions": ["notifications"],
-  "version": "1.0.4"
+  "version": "1.0.5"
 }

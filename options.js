@@ -7,7 +7,6 @@ function onChange(evt) {
   let value = el.type === "checkbox" ? el.checked : el.value;
   let obj = {};
 
-  //console.log(id,value, el.type,el.min);
   if (value === "") {
     return;
   }
@@ -27,7 +26,6 @@ function onChange(evt) {
 
   obj[id] = value;
 
-  //console.debug(id, value);
   browser.storage.local.set(obj).catch(console.error);
 }
 
@@ -115,7 +113,6 @@ function collectConfig() {
       let name = mainTableBody.rows[row].querySelector(".name").value.trim();
       let code = mainTableBody.rows[row].querySelector(".code").value.trim();
       if (name !== "" && code !== "") {
-        //console.debug(name, code);
         feeds.push({
           name,
           code,
@@ -164,7 +161,6 @@ async function restoreOptions() {
     return;
   }
   res.selectors.forEach((selector) => {
-    //console.debug(selector);
     selector.action = "delete";
     createTableRow(selector);
   });

@@ -68,9 +68,7 @@ async function onStorageChange() {
           } catch (e) {
             tmp = e.toString();
           }
-          //console.debug(tmp);
 
-          //out = tab.index + ",\"" + tab.url + "\",\"" + tmp.replace(re_break," ").replace(re_space, " ").trim().replace(re_quote, '""') + "\"\r\n" + out;
           out = tmp + "\r\n" + out;
         }
         navigator.clipboard.writeText(out);
@@ -116,7 +114,6 @@ async function handleInstalled(details) {
 }
 
 function handleHighlighted(highlightInfo) {
-  //console.debug(`Highlighted tabs: ${highlightInfo.tabIds}`);
   multipletabshighlighted = highlightInfo.tabIds.length > 1;
 }
 
