@@ -1,40 +1,58 @@
 <!DOCTYPE html>
 <head>
   <meta charset="utf-8" />
+  <style>
+    body {
+      width: 640px;
+    }
+    #output {
+      height: 9em;
+      width: 100%;
+      overflow: auto;
+      white-space: pre;
+    }
+    button {
+      float: left;
+    }
+  </style>
 </head>
-<body style="background: lightgray;">
+<body style="background: lightgray">
   <form id="mainForm" accept-charset="utf-8">
     <fieldset>
-    <input type="submit" value="Save changes"
-      style="float:right;"
-
-/>
-    <input
-      id="impbtn_wrapper"
-      type="button"
-      name="impbtn"
-      value="Import"
-    />
-    <input
-      id="impbtn"
-      type="file"
-      name="impbtn"
-      value=""
-      style="display: none"
-    />
-    <input id="expbtn" type="button" name="impbtn" value="Export"
-/>
+      <input type="submit" value="Save changes" style="float: right" />
+      <input id="impbtn_wrapper" type="button" name="impbtn" value="Import" />
+      <input
+        id="impbtn"
+        type="file"
+        name="impbtn"
+        value=""
+        style="display: none"
+      />
+      <input id="expbtn" type="button" name="impbtn" value="Export" />
     </fieldset>
     <fieldset>
-    <table id="mainTable" border="1" style="width: 100%">
-      <thead>
-        <th style="width: 30%">Name</th>
-        <th>Code</th>
-        <th style="width: 0px">Action</th>
-      </thead>
-      <tbody id="mainTableBody" />
-    </table>
+      <table id="mainTable" border="1" style="width: 100%">
+        <thead>
+          <th style="width: 20%">Name</th>
+          <th style="width: 50%">Code</th>
+          <th style="width: 10%">Actions</th>
+        </thead>
+        <tbody id="mainTableBody" />
+      </table>
+    </fieldset>
+    <fieldset>
+      <b>Run output from selected tabs</b>
+      <textarea id="output">
+Some hints:
+ .replace(/(?:\r\n|\r|\n)/gm, ' ')  // remove line breaks
+ .replace(/\s+/gm,' ') // remove duplicate white spaces:
+ .replace('"','""') // escape quotes, for csv output
+ +"\n"  // append line break
+ // for more info, see: https://developer.mozilla.org/en-US/docs/Web/javascript
+</textarea
+      >
     </fieldset>
   </form>
+
   <script src="options.js"></script>
 </body>

@@ -88,20 +88,63 @@ function createTableRow(feed) {
       }
     });
 
-  let button;
   if (feed.action === "add") {
-    button = createButton("Add", "addButton", function () {}, true);
-  } else {
-    button = createButton(
-      "Delete",
+    let button = createButton("ADD", "addButton", function () {}, true);
+    tr.insertCell().appendChild(button);
+  } else if (feed.action === "delete") {
+    let button = createButton(
+      "DEL",
       "deleteButton",
       function () {
         deleteRow(tr);
       },
       false
     );
+    let runbutton = createButton(
+      "RUN",
+      "runButton",
+      async function () {
+        //deleteRow(tr);
+        console.debug(tr.querySelector("td input.code").value);
+        const code = tr.querySelector("td input.code").value;
+
+        let tmp = "";
+        let out = "";
+
+        const tabs = await browser.tabs.query({
+          currentWindow: true,
+          highlighted: true,
+        });
+
+        for (const tab of tabs) {
+          try {
+            tmp = await browser.tabs.executeScript(tab.id, {
+              code: `${code}`,
+            });
+
+            tmp = tmp[0];
+          } catch (e) {
+            tmp = e.toString();
+          }
+
+          out = tmp + out;
+        }
+        document.querySelector("#output").value = out;
+
+        try {
+          await navigator.clipboard.writeText(out);
+        } catch (e) {
+          // noop
+          console.debug(e);
+        }
+      },
+      false
+    );
+    button.append(runbutton);
+    tr.insertCell().appendChild(button);
+  } else {
+    console.error("invalid action: ", feed.action);
   }
-  tr.insertCell().appendChild(button);
 }
 
 function collectConfig() {
@@ -128,10 +171,10 @@ function collectConfig() {
 function createButton(text, id, callback, submit) {
   let span = document.createElement("span");
   let button = document.createElement("button");
-  button.id = id;
+  //button.id = id;
   button.textContent = text;
-  button.className = "browser-style";
-  button.style.width = "99%";
+  //button.className = "browser-style";
+  button.className = id;
   if (submit) {
     button.type = "submit";
   } else {
