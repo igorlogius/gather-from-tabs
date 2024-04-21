@@ -104,8 +104,6 @@ function createTableRow(feed) {
       "RUN",
       "runButton",
       async function () {
-        //deleteRow(tr);
-        console.debug(tr.querySelector("td input.code").value);
         const code = tr.querySelector("td input.code").value;
 
         let tmp = "";
@@ -135,7 +133,6 @@ function createTableRow(feed) {
           await navigator.clipboard.writeText(out);
         } catch (e) {
           // noop
-          console.debug(e);
         }
       },
       false
