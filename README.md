@@ -1,5 +1,7 @@
 Gather information from multiple tabs, by using a small snippet of javascript
 
+### [Click here to report a bug, make a suggestion or ask a question](https://github.com/igorlogius/igorlogius/issues/new/choose)
+
 <b>Short Demo Video:</b>
 
 https://github.com/igorlogius/gather-from-tabs/assets/67047467/6c58651d-e8f8-462f-af98-7033cb2d80ea
