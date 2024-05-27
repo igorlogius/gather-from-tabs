@@ -9,8 +9,10 @@ async function setToStorage(id, value) {
 async function handleInstalled(details) {
   if (details.reason === "install") {
     await setToStorage("selectors", [
-      { name: "Title", code: 'document.title + "\\n"' },
-      { name: "URL", code: 'document.location.href + "\\n"' },
+      {
+        name: "Title:URL",
+        code: 'document.title +":"+ document.location.href + "\\n"',
+      },
       {
         name: "Text (no breaks)",
         code: "document.body.innerText.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ') + \"\\n\"",
@@ -20,8 +22,16 @@ async function handleInstalled(details) {
         code: "document.querySelectorAll('p')[0].innerText.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ') + \"\\n\"",
       },
       {
+        name: "URLEncode(url)",
+        code: 'encodeURI(document.location.href) + "\\n"',
+      },
+      {
         name: "CSV (url,text) (no breaks, no dup spaces, escape quotes)",
         code: "document.location.href + ',\"' + document.body.innerText.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ').replace(/\\s+/gm,' ').replace('\"','\"\"') + '\"' + \"\\n\"",
+      },
+      {
+        name: "Base64Encode URL",
+        code: '(function(){const o=location.href;return btoa(Array.from((new TextEncoder).encode(o),(o=>String.fromCodePoint(o))).join(""))}()) + "\\n"',
       },
       {
         name: "(!Template!) Get innerText of first matching <Selector>",

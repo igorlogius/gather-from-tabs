@@ -3,7 +3,7 @@
   "homepage_url": "https://github.com/igorlogius",
   "browser_action": {
     "default_area": "navbar",
-    "default_popup": "options.html"
+    "default_popup": "popup.html"
   },
   "background": {
     "scripts": ["background.js"]
@@ -11,9 +11,12 @@
   "icons": {
     "512": "icon.png"
   },
+  "options_ui": {
+    "page": "options.html"
+  },
   "manifest_version": 2,
   "name": "Gather from Tabs",
   "permissions": ["<all_urls>", "storage"],
   "optional_permissions": ["clipboardWrite"],
-  "version": "1.1.5"
+  "version": "1.1.6"
 }
