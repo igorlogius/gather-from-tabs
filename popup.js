@@ -73,12 +73,12 @@ function createTableRow(feed) {
         input = document.createElement("input");
         input.className = key;
         input.placeholder = key;
-        input.style.width = "99%";
+        input.style.width = "97%";
         input.type = "text";
         input.value = feed[key];
         tr.insertCell().appendChild(input);
       } else if (key === "code" /*|| key === 'default'*/) {
-        input = document.createElement("input");
+        input = document.createElement("textarea");
         input.className = key;
         input.placeholder = key;
         input.style.width = "99%";
@@ -104,7 +104,7 @@ function createTableRow(feed) {
       "▶️",
       "runButton",
       async function () {
-        const code = tr.querySelector("td input.code").value;
+        const code = tr.querySelector("td textarea.code").value;
 
         let tmp = "";
         let out = "";
@@ -112,8 +112,12 @@ function createTableRow(feed) {
         const tabs = await browser.tabs.query({
           currentWindow: true,
           highlighted: true,
+          url: "<all_urls>",
         });
-
+        if (tabs.length < 1) {
+          alert("No Tabs selected, please select at least one tab!");
+          return;
+        }
         for (const tab of tabs) {
           try {
             tmp = await browser.tabs.executeScript(tab.id, {
@@ -209,12 +213,31 @@ async function restoreOptions() {
 document.addEventListener("DOMContentLoaded", restoreOptions);
 document.querySelector("form").addEventListener("submit", saveOptions);
 
-//const impbtnWrp = document.getElementById("impbtn_wrapper");
-//const impbtn = document.getElementById("impbtn");
-//const expbtn = document.getElementById("expbtn");
-const optsbtn = document.getElementById("optsbtn");
+const impbtnWrp = document.getElementById("impbtn_wrapper");
+const impbtn = document.getElementById("impbtn");
 
-/*
+// delegate to real Import Button which is a file selector
+impbtnWrp.addEventListener("click", function () {
+  impbtn.click();
+});
+
+impbtn.addEventListener("input", function (evt) {
+  let file = this.files[0];
+  let reader = new FileReader();
+  reader.onload = async function () {
+    try {
+      let config = JSON.parse(reader.result);
+      //config = sanatizeConfig(config);
+      await browser.storage.local.set({ selectors: config });
+    } catch (e) {
+      console.error("error loading file: " + e);
+    }
+  };
+  reader.readAsText(file);
+});
+
+const expbtn = document.getElementById("expbtn");
+
 expbtn.addEventListener("click", async function () {
   let dl = document.createElement("a");
   let res = await browser.storage.local.get("selectors");
@@ -223,36 +246,10 @@ expbtn.addEventListener("click", async function () {
     "href",
     "data:application/json;charset=utf-8," + encodeURIComponent(content)
   );
-  dl.setAttribute("download", "data.json");
+  dl.setAttribute("download", "gather-from-tabs_export.json");
   dl.setAttribute("visibility", "hidden");
   dl.setAttribute("display", "none");
   document.body.appendChild(dl);
   dl.click();
   document.body.removeChild(dl);
 });
-*/
-
-// delegate to real Import Button which is a file selector
-optsbtn.addEventListener("click", function (evt) {
-  browser.runtime.openOptionsPage();
-  window.close();
-});
-
-/*
-impbtn.addEventListener("input", function (evt) {
-  evt.preventDefault();
-  let file = this.files[0];
-  let reader = new FileReader();
-  reader.onload = async function () {
-    try {
-      let config = JSON.parse(reader.result);
-      //config = sanatizeConfig(config);
-      await browser.storage.local.set({ selectors: config });
-      document.querySelector("form").submit();
-    } catch (e) {
-      console.error("error loading file: " + e);
-    }
-  };
-  reader.readAsText(file);
-});
-*/

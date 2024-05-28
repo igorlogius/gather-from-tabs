@@ -46,3 +46,13 @@ async function handleInstalled(details) {
 }
 
 browser.runtime.onInstalled.addListener(handleInstalled);
+
+browser.browserAction.onClicked.addListener(async (tab) => {
+  const panel_url = browser.runtime.getURL("popup.html");
+  (await browser.tabs.query({ currentWindow: true })).forEach((t) => {
+    if (t.url.startsWith(panel_url)) {
+      browser.tabs.remove(t.id);
+    }
+  });
+  browser.tabs.create({ url: panel_url, active: true });
+});
