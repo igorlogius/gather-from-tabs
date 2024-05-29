@@ -130,6 +130,8 @@ function createTableRow(feed) {
         const tabs = await browser.tabs.query({
           currentWindow: true,
           url: "<all_urls>",
+          discarded: false,
+          status: "complete",
         });
         if (tabs.length < 1) {
           alert(
