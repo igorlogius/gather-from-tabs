@@ -7,7 +7,7 @@
     }
     #output {
       height: 12em;
-      width: 100%;
+      width: 99%;
       overflow: auto;
       white-space: pre;
     }
@@ -16,6 +16,9 @@
     }
     textarea {
       resize: vertical;
+    }
+    tr:hover > td {
+      border: 3px solid blue;
     }
   </style>
 </head>
@@ -35,7 +38,13 @@ Some hints:
   </fieldset>
   <form id="mainForm" accept-charset="utf-8">
     <fieldset>
-      <input id="impbtn_wrapper" type="button" name="impbtn" value="Import" />
+      <input
+        id="impbtn_wrapper"
+        type="button"
+        name="impbtn"
+        value="Import"
+        title="Import Settings"
+      />
       <input
         id="impbtn"
         type="file"
@@ -43,7 +52,13 @@ Some hints:
         value=""
         style="display: none"
       />
-      <input id="expbtn" type="button" name="impbtn" value="Export" />
+      <input
+        id="expbtn"
+        type="button"
+        name="impbtn"
+        value="Export"
+        title="Export Settings"
+      />
       <input type="submit" value="✅" style="float: right" title="Save Edits" />
       <!--input id="impbtn_wrapper" type="button" name="impbtn" value="Import" /-->
       <!--input
@@ -55,10 +70,10 @@ Some hints:
       /-->
       <!--input id="expbtn" type="button" name="impbtn" value="Export" /-->
 
-      <table id="mainTable" border="1" style="width: 100%">
+      <table id="mainTable" border="1" style="width: 99%">
         <thead>
           <th style="width: 20%">name</th>
-          <th style="width: 70%">code</th>
+          <th style="width: 70%">script</th>
           <th style="width: auto"></th>
         </thead>
         <tbody id="mainTableBody" />
@@ -68,7 +83,7 @@ Some hints:
       <b>Tips:</b>
       <ul>
         <li>
-          Need to select a lot of tabs? Take a look at :
+          To select a bunch of tabs to move them into a separate window, see
           <a
             target="_blank"
             href="https://addons.mozilla.org/firefox/addon/select-tabs-extras"
@@ -76,16 +91,16 @@ Some hints:
           >
         </li>
         <li>
-          Need to remove duplicates? Take a look at :
+          To close tabs with the same URL, see
           <a
             target="_blank"
             href="https://addons.mozilla.org/firefox/addon/close-duplicate-tabs"
-            >Close duplicate Tabs</a
+            >Close Duplicate Tabs</a
           >
         </li>
       </ul>
     </fieldset>
   </form>
 
-  <script src="popup.js"></script>
+  <script src="main.js"></script>
 </body>

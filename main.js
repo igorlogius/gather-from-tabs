@@ -62,7 +62,7 @@ function deleteRow(rowTr) {
 function createTableRow(feed) {
   let mainTableBody = document.getElementById("mainTableBody");
   let tr = mainTableBody.insertRow();
-  tr.style = "vertical-align:top;";
+  tr.style = "vertical-align:middle;";
 
   Object.keys(feed)
     .sort()
@@ -91,6 +91,7 @@ function createTableRow(feed) {
 
   if (feed.action === "add") {
     let button = createButton("➕", "addButton", function () {}, true);
+    button.setAttribute("title", "Add new script");
     tr.insertCell().appendChild(button);
   } else if (feed.action === "delete") {
     let button = createButton(
@@ -101,18 +102,12 @@ function createTableRow(feed) {
       },
       false
     );
+    button.setAttribute("title", "Delete ");
     let runbutton = createButton(
       "▶️",
       "runButton",
       async function () {
         let origins = ["<all_urls>"];
-        /*
-        for (const tab of tabs) {
-            let asdf = new URL(tab.url);
-            asdf = asdf.origin + '/*';
-            origins.push(asdf);
-        }
-        */
 
         const permissionsToRequest = {
           origins,
@@ -124,7 +119,7 @@ function createTableRow(feed) {
 
         if (response !== true) {
           alert(
-            "[Error]: Script execution canceled!\nRequired host permissions not granted!"
+            "[Error]: Required host permissions not available!\nPlease grant required permission to allow script execution."
           );
           return;
         }
@@ -134,12 +129,11 @@ function createTableRow(feed) {
 
         const tabs = await browser.tabs.query({
           currentWindow: true,
-          highlighted: true,
           url: "<all_urls>",
         });
         if (tabs.length < 1) {
           alert(
-            "[Error]: No valid tabs selected!\nSelect at least one tab with a valid URL before trying to run a script with the ▶️  button"
+            "[Error]: No valid tabs found in this window!\nOpen at least one tab with a real URL before clicking the ▶️  button."
           );
           return;
         }
@@ -169,6 +163,7 @@ function createTableRow(feed) {
       },
       false
     );
+    runbutton.setAttribute("title", "Run");
     button.append(runbutton);
     tr.insertCell().appendChild(button);
   } else {
@@ -249,7 +244,7 @@ impbtnWrp.addEventListener("click", function () {
   impbtn.click();
 });
 
-impbtn.addEventListener("input", function (evt) {
+impbtn.addEventListener("input", function () {
   let file = this.files[0];
   let reader = new FileReader();
   reader.onload = async function () {
@@ -257,6 +252,7 @@ impbtn.addEventListener("input", function (evt) {
       let config = JSON.parse(reader.result);
       //config = sanatizeConfig(config);
       await browser.storage.local.set({ selectors: config });
+      location.reload();
     } catch (e) {
       console.error("error loading file: " + e);
     }
