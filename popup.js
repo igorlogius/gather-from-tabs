@@ -84,6 +84,7 @@ function createTableRow(feed) {
         input.style.width = "99%";
         input.type = "text";
         input.value = feed[key];
+        input.setAttribute("spellcheck", "false");
         tr.insertCell().appendChild(input);
       }
     });
@@ -104,7 +105,29 @@ function createTableRow(feed) {
       "▶️",
       "runButton",
       async function () {
-        const code = tr.querySelector("td textarea.code").value;
+        let origins = ["<all_urls>"];
+        /*
+        for (const tab of tabs) {
+            let asdf = new URL(tab.url);
+            asdf = asdf.origin + '/*';
+            origins.push(asdf);
+        }
+        */
+
+        const permissionsToRequest = {
+          origins,
+        };
+
+        const response = await browser.permissions.request(
+          permissionsToRequest
+        );
+
+        if (response !== true) {
+          alert(
+            "[Error]: Script execution canceled!\nRequired host permissions not granted!"
+          );
+          return;
+        }
 
         let tmp = "";
         let out = "";
@@ -115,9 +138,14 @@ function createTableRow(feed) {
           url: "<all_urls>",
         });
         if (tabs.length < 1) {
-          alert("No Tabs selected, please select at least one tab!");
+          alert(
+            "[Error]: No valid tabs selected!\nSelect at least one tab with a valid URL before trying to run a script with the ▶️  button"
+          );
           return;
         }
+
+        const code = tr.querySelector("td textarea.code").value;
+
         for (const tab of tabs) {
           try {
             tmp = await browser.tabs.executeScript(tab.id, {

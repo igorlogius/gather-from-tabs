@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Title:URL",
+    "code": "(() => { \n    return document.title +':'+ document.location.href + \"\\n\"; \n})()"
+  },
+  {
+    "name": "Text (no breaks)",
+    "code": "(() => { \n    return document.body.innerText.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ') + \"\\n\"; \n})()"
+  },
+  {
+    "name": "1st paragraph (no breaks)",
+    "code": "(() => { \n    return document.querySelectorAll('p')[0].innerText.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ') + \"\\n\";\n})()"
+  },
+  {
+    "name": "URLEncode(url)",
+    "code": "(() => { \n   return encodeURI(document.location.href) + \"\\n\";\n})()"
+  },
+  {
+    "name": "CSV (url,text) (no breaks, no dup spaces, escape quotes)",
+    "code": "(() => { \n    return document.location.href + ',\"' + document.body.innerText.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ').replace(/\\s+/gm,' ').replace('\"','\"\"') + '\"' + \"\\n\";\n})()"
+  },
+  {
+    "name": "Base64Encode URL",
+    "code": "(() => {\n    const o = location.href;\n    return btoa(\n        Array.from(\n            (new TextEncoder).encode(o),\n            (o => String.fromCodePoint(o))\n        ).join('')\n    ) + \"\\n\"\n})()"
+  },
+  {
+    "name": "(!Template!) Get innerText of first matching <Selector>",
+    "code": "(() => { \n    return document.querySelector('<Selector>').innerText + \"\\n\";\n})()"
+  },
+  {
+    "name": "(!Template!) Get innerText of <N>th matching <Selector>",
+    "code": "(() => {\n    return document.querySelectorAll('<Selector>')[<N>].innerText + \"\\n\";\n})()"
+  }
+]
