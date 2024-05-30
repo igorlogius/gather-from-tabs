@@ -5,6 +5,7 @@ browser.runtime.onInstalled.addListener(async (details) => {
     let tmp = await fetch(browser.runtime.getURL("settings.json"));
     tmp = await tmp.json();
     browser.storage.local.set({ selectors: tmp });
+    browser.runtime.openOptionsPage();
   }
 });
 

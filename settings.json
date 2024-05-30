@@ -1,34 +1,17 @@
 [
   {
-    "name": "Title:URL",
-    "code": "(() => { \n    return document.title +':'+ document.location.href + \"\\n\"; \n})()"
+    "code": "/* URL + Title */\n(() => { \n    const title = document.title;\n    const url = document.location.href;\n    return  url + ' : ' + title + \"\\n\"; \n})()"
   },
   {
-    "name": "Text (no breaks)",
-    "code": "(() => { \n    return document.body.innerText.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ') + \"\\n\"; \n})()"
+    "code": "/* Full Page Text (no breaks) */\n(() => { \n    function stripLB(txt){\n        return txt.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ');\n    }\n    const url = document.location.href;\n    const txt = document.body.innerText;\n    return url + \" : \" + stripLB(txt) + \"\\n\"; \n})()"
   },
   {
-    "name": "1st paragraph (no breaks)",
-    "code": "(() => { \n    return document.querySelectorAll('p')[0].innerText.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ') + \"\\n\";\n})()"
+    "code": "/* 1st paragraph (no breaks) */\n(() => { \n    function stripLB(txt){\n        return txt.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ');\n    }\n    const url = document.location.href;\n    const node = document.querySelector('p');\n    let out = url + \" : \";\n    if(node){\n        out += stripLB(node.innerText);\n    }else{\n        out += 'no paragraphs found';\n    }\n    return out + \"\\n\";\n})()"
   },
   {
-    "name": "URLEncode(url)",
-    "code": "(() => { \n   return encodeURI(document.location.href) + \"\\n\";\n})()"
+    "code": "/* URL + Base64(URL) */\n(() => {\n    const url = document.location.href;\n    return url + \": \" + btoa(\n        Array.from(\n            (new TextEncoder).encode(url),\n            (url => String.fromCodePoint(url))\n        ).join('')\n    ) + \"\\n\"\n})()"
   },
   {
-    "name": "CSV (url,text) (no breaks, no dup spaces, escape quotes)",
-    "code": "(() => { \n    return document.location.href + ',\"' + document.body.innerText.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ').replace(/\\s+/gm,' ').replace('\"','\"\"') + '\"' + \"\\n\";\n})()"
-  },
-  {
-    "name": "Base64Encode URL",
-    "code": "(() => {\n    const o = location.href;\n    return btoa(\n        Array.from(\n            (new TextEncoder).encode(o),\n            (o => String.fromCodePoint(o))\n        ).join('')\n    ) + \"\\n\"\n})()"
-  },
-  {
-    "name": "(!Template!) Get innerText of first matching <Selector>",
-    "code": "(() => { \n    return document.querySelector('<Selector>').innerText + \"\\n\";\n})()"
-  },
-  {
-    "name": "(!Template!) Get innerText of <N>th matching <Selector>",
-    "code": "(() => {\n    return document.querySelectorAll('<Selector>')[<N>].innerText + \"\\n\";\n})()"
+    "code": "/* URL + LINK.text + LINK.href */\n(() => { \n    function stripLB(txt){\n        return txt.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ');\n    }\n    const node = document.querySelector('a');\n    const url = document.location.href;\n\n    let out = url + \" : \";\n    if(node){\n        out += stripLB(node.innerText) + \" : \" + node.href;\n    }else {\n        out += 'node not found';\n    }\n    out += \"\\n\";\n\n    return out;\n})()"
   }
 ]

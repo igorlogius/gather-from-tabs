@@ -1,5 +1,10 @@
 /* global browser */
 
+const expbtn = document.getElementById("expbtn");
+const impbtnWrp = document.getElementById("impbtn_wrapper");
+const impbtn = document.getElementById("impbtn");
+let mainTableBody = document.getElementById("mainTableBody");
+
 function onChange(evt) {
   let id = evt.target.id;
   let el = document.getElementById(id);
@@ -55,21 +60,25 @@ function onChange(evt) {
 });
 
 function deleteRow(rowTr) {
-  let mainTableBody = document.getElementById("mainTableBody");
   mainTableBody.removeChild(rowTr);
 }
 
-function createTableRow(feed) {
-  let mainTableBody = document.getElementById("mainTableBody");
+function createTableRow(feed, add = false) {
   let tr = mainTableBody.insertRow();
-  tr.style = "vertical-align:middle;";
+  if (add) {
+    var firstRow = mainTableBody.rows[1];
+    firstRow.parentNode.insertBefore(tr, firstRow);
+  }
+  //tr.style = "vertical-align:middle;";
+  tr.style = "vertical-align:top;";
 
   Object.keys(feed)
     .sort()
     .reverse()
     .forEach((key) => {
       let input;
-      if (key === "name" /*|| key === 'default'*/) {
+      /*
+      if (key === "name" ) {
         input = document.createElement("input");
         input.className = key;
         input.placeholder = key;
@@ -77,7 +86,8 @@ function createTableRow(feed) {
         input.type = "text";
         input.value = feed[key];
         tr.insertCell().appendChild(input);
-      } else if (key === "code" /*|| key === 'default'*/) {
+      } else */
+      if (key === "code" /*|| key === 'default'*/) {
         input = document.createElement("textarea");
         input.className = key;
         input.placeholder = key;
@@ -85,25 +95,50 @@ function createTableRow(feed) {
         input.type = "text";
         input.value = feed[key];
         input.setAttribute("spellcheck", "false");
+        input.style.height = "1em";
 
         input.addEventListener("focusin", (evt) => {
-          evt.target.style.height = "";
+          evt.target.style.height = "1em";
           evt.target.style.height = evt.target.scrollHeight + "px";
         });
-        input.addEventListener("focusout", (evt) => {
-          evt.target.style.height = "";
+        input.addEventListener("input", (evt) => {
+          evt.target.style.height = "1em";
+          evt.target.style.height = evt.target.scrollHeight + "px";
         });
+        /*
+        input.addEventListener("focusout", (evt) => {
+            evt.target.style.height = "1em";
+        });
+        */
 
         tr.insertCell().appendChild(input);
       }
     });
 
   if (feed.action === "add") {
-    let button = createButton("➕", "addButton", function () {}, true);
+    let button = createButton(
+      "➕",
+      "addButton",
+      function () {
+        let code = mainTableBody.rows[0].querySelector(".code").value.trim();
+
+        createTableRow(
+          {
+            //name: "",
+            code,
+            action: "delete",
+          },
+          true
+        );
+        mainTableBody.rows[0].querySelector(".code").value = "";
+      },
+      true
+    );
+
     button.setAttribute("title", "Add new script");
     tr.insertCell().appendChild(button);
   } else if (feed.action === "delete") {
-    let button = createButton(
+    let deletebutton = createButton(
       "🗑",
       "deleteButton",
       function () {
@@ -111,7 +146,7 @@ function createTableRow(feed) {
       },
       false
     );
-    button.setAttribute("title", "Delete ");
+    deletebutton.setAttribute("title", "Delete ");
     let runbutton = createButton(
       "▶️",
       "runButton",
@@ -175,8 +210,8 @@ function createTableRow(feed) {
       false
     );
     runbutton.setAttribute("title", "Run");
-    button.append(runbutton);
-    tr.insertCell().appendChild(button);
+    runbutton.append(deletebutton); //.append(runbutton);
+    tr.insertCell().appendChild(runbutton);
   } else {
     console.error("invalid action: ", feed.action);
   }
@@ -184,15 +219,14 @@ function createTableRow(feed) {
 
 function collectConfig() {
   // collect configuration from DOM
-  let mainTableBody = document.getElementById("mainTableBody");
   let feeds = [];
-  for (let row = 0; row < mainTableBody.rows.length; row++) {
+  for (let row = 1; row < mainTableBody.rows.length; row++) {
     try {
-      let name = mainTableBody.rows[row].querySelector(".name").value.trim();
+      //let name = mainTableBody.rows[row].querySelector(".name").value.trim();
       let code = mainTableBody.rows[row].querySelector(".code").value.trim();
-      if (name !== "" && code !== "") {
+      if (code !== "") {
         feeds.push({
-          name,
+          //name,
           code,
         });
       }
@@ -203,18 +237,14 @@ function collectConfig() {
   return feeds;
 }
 
-function createButton(text, id, callback, submit) {
+function createButton(text, id, callback) {
   let span = document.createElement("span");
   let button = document.createElement("button");
   //button.id = id;
   button.textContent = text;
   //button.className = "browser-style";
   button.className = id;
-  if (submit) {
-    button.type = "submit";
-  } else {
-    button.type = "button";
-  }
+  button.type = "button";
   button.name = id;
   button.value = id;
   button.addEventListener("click", callback);
@@ -222,15 +252,16 @@ function createButton(text, id, callback, submit) {
   return span;
 }
 
-async function saveOptions() {
+async function saveTable() {
   let config = collectConfig();
-  //config = sanatizeConfig(config);
   await browser.storage.local.set({ selectors: config });
+  /*mainTableBody.innerHTML = '';
+  restoreOptions();*/
 }
 
 async function restoreOptions() {
   createTableRow({
-    name: "",
+    //name: "",
     code: "",
     action: "add",
   });
@@ -245,10 +276,27 @@ async function restoreOptions() {
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
-document.querySelector("form").addEventListener("submit", saveOptions);
+document.querySelector("#savetable").addEventListener("click", () => {
+  if (confirm("Are you sure?\nThis will Save the table as it is now")) {
+    saveTable();
+  }
+});
 
-const impbtnWrp = document.getElementById("impbtn_wrapper");
-const impbtn = document.getElementById("impbtn");
+document.querySelector("#discardEdits").addEventListener("click", () => {
+  if (
+    confirm("Are you sure?\nThis will Discard all edits and restore the table")
+  ) {
+    mainTableBody.innerHTML = "";
+    restoreOptions();
+  }
+});
+
+document.querySelector("#shrink").addEventListener("click", () => {
+  Array.from(document.querySelectorAll("td textarea.code")).forEach((el) => {
+    el.style.height = "1em";
+    el.scrollTop = 0;
+  });
+});
 
 // delegate to real Import Button which is a file selector
 impbtnWrp.addEventListener("click", function () {
@@ -263,15 +311,15 @@ impbtn.addEventListener("input", function () {
       let config = JSON.parse(reader.result);
       //config = sanatizeConfig(config);
       await browser.storage.local.set({ selectors: config });
-      location.reload();
+      let mainTableBody = document.getElementById("mainTableBody");
+      mainTableBody.innerHTML = "";
+      restoreOptions();
     } catch (e) {
       console.error("error loading file: " + e);
     }
   };
   reader.readAsText(file);
 });
-
-const expbtn = document.getElementById("expbtn");
 
 expbtn.addEventListener("click", async function () {
   let dl = document.createElement("a");

@@ -12,20 +12,30 @@
       overflow: auto;
       white-space: pre;
     }
-    button {
+    .deleteButton {
+    }
+    .runButton {
+      float: right;
+    }
+    .deleteButton {
       float: left;
     }
     textarea {
       resize: vertical;
+      /*text-align:right;*/
+      /*background-color: #cda;*/
+      background-color: gainsboro;
     }
     tr:hover > td {
-      border: 3px solid blue;
+      border-top: 2px solid red;
+      border-bottom: 2px solid red;
+      /*background-color: pink;*/
     }
   </style>
 </head>
-<body style="background: lightgray">
+<body style="background: silver">
   <fieldset>
-    <b>Output</b>
+    <legend><b>Script Output</b></legend>
     <textarea id="output">
 Some hints:
  .replace(/(?:\r\n|\r|\n)/gm, ' ')  // remove line breaks
@@ -37,7 +47,8 @@ Some hints:
 </textarea
     >
   </fieldset>
-  <form id="mainForm" accept-charset="utf-8">
+  <fieldset>
+    <legend><b>Manage Scripts</b></legend>
     <fieldset>
       <input
         id="impbtn_wrapper"
@@ -60,27 +71,37 @@ Some hints:
         value="Export"
         title="Export Settings"
       />
-      <input type="submit" value="✅" style="float: right" title="Save Edits" />
-      <!--input id="impbtn_wrapper" type="button" name="impbtn" value="Import" /-->
-      <!--input
-        id="impbtn"
-        type="file"
-        name="impbtn"
-        value=""
-        style="display: none"
-      /-->
-      <!--input id="expbtn" type="button" name="impbtn" value="Export" /-->
-
-      <table id="mainTable" border="1" style="width: 99%">
-        <thead>
-          <th style="width: 20%">name</th>
-          <th style="width: 70%">script</th>
-          <th style="width: auto"></th>
-        </thead>
-        <tbody id="mainTableBody" />
-      </table>
+      <input
+        id="savetable"
+        type="button"
+        value="✅Save"
+        style="float: right"
+        title="Save Edits"
+      />
+      <input
+        id="shrink"
+        type="button"
+        value="&#8690;Minimize"
+        style="float: right"
+        title="Minimize Textareas"
+      />
+      <input
+        id="discardEdits"
+        type="button"
+        value="Discard"
+        style="float: right"
+        title="Discard Edits"
+      />
     </fieldset>
-    <fieldset>
+    <table id="mainTable" border="1" style="width: 100%; table-layout: fixed">
+      <col width="auto" />
+      <col width="75px" />
+      <thead></thead>
+      <tbody id="mainTableBody" />
+    </table>
+  </fieldset>
+  <fieldset>
+    <small>
       <b>Tips:</b>
       <ul>
         <li>
@@ -100,8 +121,8 @@ Some hints:
           >
         </li>
       </ul>
-    </fieldset>
-  </form>
+    </small>
+  </fieldset>
 
   <script src="main.js"></script>
 </body>
