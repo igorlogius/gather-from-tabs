@@ -85,6 +85,15 @@ function createTableRow(feed) {
         input.type = "text";
         input.value = feed[key];
         input.setAttribute("spellcheck", "false");
+
+        input.addEventListener("focusin", (evt) => {
+          evt.target.style.height = "";
+          evt.target.style.height = evt.target.scrollHeight + "px";
+        });
+        input.addEventListener("focusout", (evt) => {
+          evt.target.style.height = "";
+        });
+
         tr.insertCell().appendChild(input);
       }
     });
