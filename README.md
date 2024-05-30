@@ -1,4 +1,4 @@
-Gather information from multiple tabs, by using a small snippet of javascript
+Gather information from multiple tabs
 
 [![](https://raw.githubusercontent.com/igorlogius/igorlogius/main/geFxAddon.png)](https://addons.mozilla.org/firefox/addon/gather-from-tabs/)
 
@@ -8,13 +8,12 @@ Gather information from multiple tabs, by using a small snippet of javascript
 
 https://github.com/igorlogius/gather-from-tabs/assets/67047467/6c58651d-e8f8-462f-af98-7033cb2d80ea
 
-<b>Usage</b>
+<b>Functions</b>
 <ol>
-  <li>Click the toolbar icon/button</li>
-  <li>Enter a name and a snippet of javascript code, then click the ADD button</li>
-  <li>Select the tabs you want to run a snippet in (and maybe gather the output from)</li>
-  <li>Click the toolbar icon/button</li>
-  <li>Click the corresponding RUN button</li>
-  <li>Copy the output from the textarea</li>
-  <li>(optional) Granting the "Input data to the clipboard" permission puts the run output directly into the clipboard</li>
+  <li>Toolbar button opens the control tab</li>
+  <li>Create a new script, by entering a name and a some javascript code in the first row, then clicking the + button at the end to add it</li>
+  <li>To run a script against all tabs in the current window, just click the play/run button at the end of a row</li>
+  <li>Import/Export Settings</li>
+  <li>Save all edits done all inside all rows</li>
+  <li>Granting the "Input data to the clipboard" permission puts the run output directly into the clipboard</li>
 </ol>
