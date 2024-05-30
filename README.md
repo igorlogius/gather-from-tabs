@@ -6,14 +6,15 @@ Gather information from multiple tabs
 
 <b>Short Demo Video:</b>
 
-https://github.com/igorlogius/gather-from-tabs/assets/67047467/6c58651d-e8f8-462f-af98-7033cb2d80ea
+https://github.com/igorlogius/gather-from-tabs/assets/67047467/c5fca932-3a85-45a6-b8a2-30b408a3ef59
 
 <b>Functions</b>
 <ol>
-  <li>Toolbar button opens the control tab</li>
-  <li>Create a new script, by entering a name and a some javascript code in the first row, then clicking the + button at the end to add it</li>
-  <li>To run a script against all tabs in the current window, just click the play/run button at the end of a row</li>
-  <li>Import/Export Settings</li>
-  <li>Save all edits done all inside all rows</li>
-  <li>Granting the "Input data to the clipboard" permission puts the run output directly into the clipboard</li>
+  <li>Toolbar button opens GFT script management view</li>
+  <li>To run a script against all tabs in the current window, just click the `play` button in the script row you want to run</li>
+  <li>To add a script, use the first row of the table</li>
+  <li>All add, edit and delete actions are non-persistent. To make the current table state persistent, click the `Save` button at the top right or use the `Discard` button to reset the table into its last saved state </li>
+  <li>Use the import/export to restore or save the current scripts locally as/from JSON files</li>
+  <li>The textareas whill auto expand when focused, use the Minimize Button to shrink them back into oneliner that only shows the first line of the script. </li>
+  <li>Granting the "Input data to the clipboard" permission places the output of a run directly into the clipboard</li>
 </ol>
