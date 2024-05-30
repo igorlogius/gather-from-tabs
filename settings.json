@@ -3,10 +3,10 @@
     "code": "/* URL + Title */\n(() => { \n    const title = document.title;\n    const url = document.location.href;\n    return  url + ' : ' + title + \"\\n\"; \n})()"
   },
   {
-    "code": "/* Full Page Text (no breaks) */\n(() => { \n    function stripLB(txt){\n        return txt.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ');\n    }\n    const url = document.location.href;\n    const txt = document.body.innerText;\n    return url + \" : \" + stripLB(txt) + \"\\n\"; \n})()"
+    "code": "/* URL + PageText (no breaks) */\n(() => { \n    function stripLB(txt){\n        return txt.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ');\n    }\n    const url = document.location.href;\n    const txt = document.body.innerText;\n    return url + \" : \" + stripLB(txt) + \"\\n\"; \n})()"
   },
   {
-    "code": "/* 1st paragraph (no breaks) */\n(() => { \n    function stripLB(txt){\n        return txt.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ');\n    }\n    const url = document.location.href;\n    const node = document.querySelector('p');\n    let out = url + \" : \";\n    if(node){\n        out += stripLB(node.innerText);\n    }else{\n        out += 'no paragraphs found';\n    }\n    return out + \"\\n\";\n})()"
+    "code": "/* URL + 1st paragraph (no breaks) */\n(() => { \n    function stripLB(txt){\n        return txt.replace(/(?:\\r\\n|\\r|\\n)/gm, ' ');\n    }\n    const url = document.location.href;\n    const node = document.querySelector('p');\n    let out = url + \" : \";\n    if(node){\n        out += stripLB(node.innerText);\n    }else{\n        out += 'no paragraphs found';\n    }\n    return out + \"\\n\";\n})()"
   },
   {
     "code": "/* URL + Base64(URL) */\n(() => {\n    const url = document.location.href;\n    return url + \": \" + btoa(\n        Array.from(\n            (new TextEncoder).encode(url),\n            (url => String.fromCodePoint(url))\n        ).join('')\n    ) + \"\\n\"\n})()"

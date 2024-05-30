@@ -18,5 +18,5 @@
   "name": "Gather from Tabs",
   "permissions": ["storage"],
   "optional_permissions": ["<all_urls>", "clipboardWrite"],
-  "version": "1.1.14"
+  "version": "1.1.15"
 }
