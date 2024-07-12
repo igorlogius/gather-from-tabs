@@ -194,7 +194,7 @@ function createTableRow(feed, add = false) {
 
             tmp = tmp[0];
           } catch (e) {
-            tmp = e.toString();
+            tmp = e.toString() + " " + tab.url + "\n";
           }
 
           out = tmp + out;
