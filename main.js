@@ -128,11 +128,11 @@ function createTableRow(feed, add = false) {
             code,
             action: "delete",
           },
-          true
+          true,
         );
         mainTableBody.rows[0].querySelector(".code").value = "";
       },
-      true
+      true,
     );
 
     button.setAttribute("title", "Add new script");
@@ -144,7 +144,7 @@ function createTableRow(feed, add = false) {
       function () {
         deleteRow(tr);
       },
-      false
+      false,
     );
     deletebutton.setAttribute("title", "Delete ");
     let runbutton = createButton(
@@ -157,13 +157,12 @@ function createTableRow(feed, add = false) {
           origins,
         };
 
-        const response = await browser.permissions.request(
-          permissionsToRequest
-        );
+        const response =
+          await browser.permissions.request(permissionsToRequest);
 
         if (response !== true) {
           alert(
-            "[Error]: Required host permissions not available!\nPlease grant required permission to allow script execution."
+            "[Error]: Required host permissions not available!\nPlease grant required permission to allow script execution.",
           );
           return;
         }
@@ -171,15 +170,24 @@ function createTableRow(feed, add = false) {
         let tmp = "";
         let out = "";
 
-        const tabs = await browser.tabs.query({
+        let tabs = await browser.tabs.query({
+          active: false,
+          highlighted: true,
           currentWindow: true,
           url: "<all_urls>",
           discarded: false,
           status: "complete",
         });
+
+        /*
+        if (tabs.some((el) => el.highlighted)) {
+          tabs = tabs.filter((el) => el.highlighted);
+        }
+        */
+
         if (tabs.length < 1) {
           alert(
-            "[Error]: No valid tabs found in this window!\nOpen at least one tab with a real URL before clicking the ▶️  button."
+            "[Error]: No tabs with a valid url selected in this window!\nPlease select at least one tab with a real URL before clicking the ▶️  button.",
           );
           return;
         }
@@ -207,7 +215,7 @@ function createTableRow(feed, add = false) {
           // noop
         }
       },
-      false
+      false,
     );
     runbutton.setAttribute("title", "Run");
     runbutton.append(deletebutton); //.append(runbutton);
@@ -327,7 +335,7 @@ expbtn.addEventListener("click", async function () {
   let content = JSON.stringify(res.selectors, null, 4);
   dl.setAttribute(
     "href",
-    "data:application/json;charset=utf-8," + encodeURIComponent(content)
+    "data:application/json;charset=utf-8," + encodeURIComponent(content),
   );
   dl.setAttribute("download", "gather-from-tabs_export.json");
   dl.setAttribute("visibility", "hidden");
