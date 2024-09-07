@@ -6,7 +6,7 @@ Gather information from multiple tabs
 
 <b>Short Demo Video:</b>
 
-https://github.com/igorlogius/gather-from-tabs/assets/67047467/cf9a9469-78fb-45f6-b125-ecb1e43b298f
+https://github.com/user-attachments/assets/966eb626-bdfb-4ecd-b909-1f2ace9cd344
 
 <b>Functions</b>
 <ol>
