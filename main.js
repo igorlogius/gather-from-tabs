@@ -151,6 +151,7 @@ function createTableRow(feed, add = false) {
       "▶️",
       "runButton",
       async function () {
+        /*
         let origins = ["<all_urls>"];
 
         const permissionsToRequest = {
@@ -166,6 +167,7 @@ function createTableRow(feed, add = false) {
           );
           return;
         }
+        */
 
         let tmp = "";
         let out = "";
