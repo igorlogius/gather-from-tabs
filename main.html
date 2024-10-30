@@ -31,11 +31,22 @@
       border-bottom: 2px solid red;
       /*background-color: pink;*/
     }
+    #btn_copy_as_html,
+    #btn_copy_as_text {
+      width: 50%;
+      float: right;
+    }
+    #shortcutconfigs {
+      width: 100%;
+    }
+    #shortcutconfigs select {
+      width: 99%;
+    }
   </style>
 </head>
 <body style="background: silver">
   <fieldset>
-    <legend><b>Script Output</b></legend>
+    <legend><b>Output</b></legend>
     <textarea id="output">
 Some hints:
  .replace(/(?:\r\n|\r|\n)/gm, ' ')  // remove line breaks
@@ -46,6 +57,8 @@ Some hints:
  // for more info, see: https://developer.mozilla.org/en-US/docs/Web/javascript
 </textarea
     >
+    <button id="btn_copy_as_text">Copy as Text</button>
+    <button id="btn_copy_as_html">Copy as HTML</button>
   </fieldset>
   <fieldset>
     <legend><b>Manage Scripts</b></legend>
@@ -101,5 +114,157 @@ Some hints:
     </table>
   </fieldset>
 
+  <fieldset>
+    <legend><b>Configure Shortcuts</b></legend>
+
+    <table id="shortcutconfigs" border="1">
+      <tr>
+        <td>1</td>
+        <td>
+          <select name="formatlist"></select>
+        </td>
+        <td>
+          <select name="scopelist"></select>
+        </td>
+        <td>
+          <select name="actionlist"></select>
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>
+          <select name="formatlist"></select>
+        </td>
+        <td>
+          <select name="scopelist"></select>
+        </td>
+        <td>
+          <select name="actionlist"></select>
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>
+          <select name="formatlist"></select>
+        </td>
+        <td>
+          <select name="scopelist"></select>
+        </td>
+        <td>
+          <select name="actionlist"></select>
+        </td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>
+          <select name="formatlist"></select>
+        </td>
+        <td>
+          <select name="scopelist"></select>
+        </td>
+        <td>
+          <select name="actionlist"></select>
+        </td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>
+          <select name="formatlist"></select>
+        </td>
+        <td>
+          <select name="scopelist"></select>
+        </td>
+        <td>
+          <select name="actionlist"></select>
+        </td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>
+          <select name="formatlist"></select>
+        </td>
+        <td>
+          <select name="scopelist"></select>
+        </td>
+        <td>
+          <select name="actionlist"></select>
+        </td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>
+          <select name="formatlist"></select>
+        </td>
+        <td>
+          <select name="scopelist"></select>
+        </td>
+        <td>
+          <select name="actionlist"></select>
+        </td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>
+          <select name="formatlist"></select>
+        </td>
+        <td>
+          <select name="scopelist"></select>
+        </td>
+        <td>
+          <select name="actionlist"></select>
+        </td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>
+          <select name="formatlist"></select>
+        </td>
+        <td>
+          <select name="scopelist"></select>
+        </td>
+        <td>
+          <select name="actionlist"></select>
+        </td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>
+          <select name="formatlist"></select>
+        </td>
+        <td>
+          <select name="scopelist"></select>
+        </td>
+        <td>
+          <select name="actionlist"></select>
+        </td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td>
+          <select name="formatlist"></select>
+        </td>
+        <td>
+          <select name="scopelist"></select>
+        </td>
+        <td>
+          <select name="actionlist"></select>
+        </td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>
+          <select name="formatlist"></select>
+        </td>
+        <td>
+          <select name="scopelist"></select>
+        </td>
+        <td>
+          <select name="actionlist"></select>
+        </td>
+      </tr>
+    </table>
+  </fieldset>
+
+  <script src="utils.js"></script>
   <script src="main.js"></script>
 </body>

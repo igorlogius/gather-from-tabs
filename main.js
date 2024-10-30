@@ -5,60 +5,6 @@ const impbtnWrp = document.getElementById("impbtn_wrapper");
 const impbtn = document.getElementById("impbtn");
 let mainTableBody = document.getElementById("mainTableBody");
 
-function onChange(evt) {
-  let id = evt.target.id;
-  let el = document.getElementById(id);
-
-  let value = el.type === "checkbox" ? el.checked : el.value;
-  let obj = {};
-
-  if (value === "") {
-    return;
-  }
-  if (el.type === "number") {
-    try {
-      value = parseInt(value);
-      if (isNaN(value)) {
-        value = el.min;
-      }
-      if (value < el.min) {
-        value = el.min;
-      }
-    } catch (e) {
-      value = el.min;
-    }
-  }
-
-  obj[id] = value;
-
-  browser.storage.local.set(obj).catch(console.error);
-}
-
-[
-  /* add individual settings here */
-].map((id) => {
-  browser.storage.local
-    .get(id)
-    .then((obj) => {
-      let el = document.getElementById(id);
-      let val = obj[id];
-
-      if (typeof val !== "undefined") {
-        if (el.type === "checkbox") {
-          el.checked = val;
-        } else {
-          el.value = val;
-        }
-      } else {
-        el.value = 0;
-      }
-    })
-    .catch(console.error);
-
-  let el = document.getElementById(id);
-  el.addEventListener("input", onChange);
-});
-
 function deleteRow(rowTr) {
   mainTableBody.removeChild(rowTr);
 }
@@ -69,7 +15,6 @@ function createTableRow(feed, add = false) {
     var firstRow = mainTableBody.rows[1];
     firstRow.parentNode.insertBefore(tr, firstRow);
   }
-  //tr.style = "vertical-align:middle;";
   tr.style = "vertical-align:top;";
 
   Object.keys(feed)
@@ -77,17 +22,7 @@ function createTableRow(feed, add = false) {
     .reverse()
     .forEach((key) => {
       let input;
-      /*
-      if (key === "name" ) {
-        input = document.createElement("input");
-        input.className = key;
-        input.placeholder = key;
-        input.style.width = "97%";
-        input.type = "text";
-        input.value = feed[key];
-        tr.insertCell().appendChild(input);
-      } else */
-      if (key === "code" /*|| key === 'default'*/) {
+      if (key === "code") {
         input = document.createElement("textarea");
         input.className = key;
         input.placeholder = key;
@@ -105,12 +40,6 @@ function createTableRow(feed, add = false) {
           evt.target.style.height = "1em";
           evt.target.style.height = evt.target.scrollHeight + "px";
         });
-        /*
-        input.addEventListener("focusout", (evt) => {
-            evt.target.style.height = "1em";
-        });
-        */
-
         tr.insertCell().appendChild(input);
       }
     });
@@ -124,7 +53,6 @@ function createTableRow(feed, add = false) {
 
         createTableRow(
           {
-            //name: "",
             code,
             action: "delete",
           },
@@ -151,24 +79,6 @@ function createTableRow(feed, add = false) {
       "▶️",
       "runButton",
       async function () {
-        /*
-        let origins = ["<all_urls>"];
-
-        const permissionsToRequest = {
-          origins,
-        };
-
-        const response =
-          await browser.permissions.request(permissionsToRequest);
-
-        if (response !== true) {
-          alert(
-            "[Error]: Required host permissions not available!\nPlease grant required permission to allow script execution.",
-          );
-          return;
-        }
-        */
-
         let tmp = "";
         let out = "";
 
@@ -180,12 +90,6 @@ function createTableRow(feed, add = false) {
           discarded: false,
           status: "complete",
         });
-
-        /*
-        if (tabs.some((el) => el.highlighted)) {
-          tabs = tabs.filter((el) => el.highlighted);
-        }
-        */
 
         if (tabs.length < 1) {
           alert(
@@ -220,7 +124,7 @@ function createTableRow(feed, add = false) {
       false,
     );
     runbutton.setAttribute("title", "Run");
-    runbutton.append(deletebutton); //.append(runbutton);
+    runbutton.append(deletebutton);
     tr.insertCell().appendChild(runbutton);
   } else {
     console.error("invalid action: ", feed.action);
@@ -232,11 +136,9 @@ function collectConfig() {
   let feeds = [];
   for (let row = 1; row < mainTableBody.rows.length; row++) {
     try {
-      //let name = mainTableBody.rows[row].querySelector(".name").value.trim();
       let code = mainTableBody.rows[row].querySelector(".code").value.trim();
       if (code !== "") {
         feeds.push({
-          //name,
           code,
         });
       }
@@ -250,9 +152,7 @@ function collectConfig() {
 function createButton(text, id, callback) {
   let span = document.createElement("span");
   let button = document.createElement("button");
-  //button.id = id;
   button.textContent = text;
-  //button.className = "browser-style";
   button.className = id;
   button.type = "button";
   button.name = id;
@@ -265,13 +165,10 @@ function createButton(text, id, callback) {
 async function saveTable() {
   let config = collectConfig();
   await browser.storage.local.set({ selectors: config });
-  /*mainTableBody.innerHTML = '';
-  restoreOptions();*/
 }
 
 async function restoreOptions() {
   createTableRow({
-    //name: "",
     code: "",
     action: "add",
   });
@@ -283,12 +180,17 @@ async function restoreOptions() {
     selector.action = "delete";
     createTableRow(selector);
   });
+
+  // todo move all event listener here
+  //#registerAllOtherElementEventListeners();
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
+
 document.querySelector("#savetable").addEventListener("click", () => {
   if (confirm("Are you sure?\nThis will Save the table as it is now")) {
     saveTable();
+    location.reload();
   }
 });
 
@@ -345,4 +247,88 @@ expbtn.addEventListener("click", async function () {
   document.body.appendChild(dl);
   dl.click();
   document.body.removeChild(dl);
+});
+
+document.getElementById("btn_copy_as_html").addEventListener("click", () => {
+  copyToClipboardAsHTML(document.querySelector("#output").value);
+});
+
+document.getElementById("btn_copy_as_text").addEventListener("click", () => {
+  navigator.clipboard.writeText(document.querySelector("#output").value);
+});
+
+let shortcutconfig;
+
+async function saveConfig() {
+  shortcutconfig = [];
+
+  Array.from(document.querySelectorAll("#shortcutconfigs tr")).forEach((tr) => {
+    let tmp = Array.from(tr.querySelectorAll("select")).map((e) => e.value);
+
+    shortcutconfig.push({ format: tmp[0], scope: tmp[1], action: tmp[2] });
+  });
+
+  setToStorage("shortcutconfig", shortcutconfig);
+}
+
+async function restoreConfig() {
+  const shortcutconfig = await getFromStorage("object", "shortcutconfig", []);
+
+  if (shortcutconfig.length > 0) {
+    Array.from(document.querySelectorAll("#shortcutconfigs tr")).forEach(
+      (tr) => {
+        const selects = tr.querySelectorAll("select");
+
+        selects[0].value = shortcutconfig[0].format;
+        selects[1].value = shortcutconfig[0].scope;
+        selects[2].value = shortcutconfig[0].action;
+
+        shortcutconfig.shift();
+      },
+    );
+  }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  let formatStrings = await getFromStorage("object", "selectors", []);
+
+  let formatlists = document.querySelectorAll('select[name="formatlist"]');
+
+  formatlists.forEach((fl) => {
+    fl.add(new Option("-- Script --", ""));
+    formatStrings.forEach((feed, index) => {
+      Object.keys(feed).forEach((key) => {
+        if (key === "code") {
+          fl.add(new Option(feed[key].split("\n")[0].trim(), index));
+        }
+      });
+    });
+  });
+
+  let scopelists = document.querySelectorAll('select[name="scopelist"]');
+
+  scopelists.forEach((sl) => {
+    sl.add(new Option("-- Scope --", ""));
+    sl.add(new Option("Current Window", "AllTabs"));
+    sl.add(new Option("Selected Current Window ", "SelectedTabs"));
+    sl.add(new Option("All Windows", "AllTabsAllWindows"));
+    sl.add(new Option("Selected All Windows", "SelectedTabsAllWindows"));
+  });
+
+  let actionlists = document.querySelectorAll('select[name="actionlist"]');
+
+  actionlists.forEach((al) => {
+    al.add(new Option("-- Action --", ""));
+    al.add(new Option("Copy as Text", "ct"));
+    al.add(new Option("Copy as HTML", "ch"));
+    al.add(new Option("Save to File", "s"));
+  });
+
+  // monitor all dropdown for changes and save the entire tabe into a config on change
+
+  Array.from(document.querySelectorAll("select")).forEach((select) => {
+    select.addEventListener("change", saveConfig);
+  });
+
+  restoreConfig();
 });

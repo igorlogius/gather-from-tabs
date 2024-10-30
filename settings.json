@@ -1,5 +1,8 @@
 [
   {
+    "code": "/* HTML */\n(() => { \n    const title = document.title;\n    const url = document.location.href;\n    return  '<a href=\"' + url + '\">-' + title + \"</a>\\n\"; \n})()"
+  },
+  {
     "code": "/* URL + Title */\n(() => { \n    const title = document.title;\n    const url = document.location.href;\n    return  url + ' : ' + title + \"\\n\"; \n})()"
   },
   {
