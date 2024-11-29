@@ -166,3 +166,5 @@ async function onCommand(cmd) {
 browser.browserAction.setBadgeBackgroundColor({ color: "#00000000" });
 
 browser.commands.onCommand.addListener(onCommand);
+
+updateMenus();
