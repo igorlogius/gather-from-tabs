@@ -36,6 +36,12 @@ async function updateMenus() {
   });
 
   browser.menus.create({
+    id: "run_only",
+    title: "Run Only (ignore output)",
+    contexts: ["tab", "page"],
+  });
+
+  browser.menus.create({
     contexts: ["tab", "page"],
     type: "separator",
   });
@@ -50,7 +56,12 @@ async function updateMenus() {
 
   const res = await browser.storage.local.get("selectors");
 
-  for (const menu_parent of ["copy_as_html", "copy_as_text", "save_as_file"]) {
+  for (const menu_parent of [
+    "copy_as_html",
+    "copy_as_text",
+    "save_as_file",
+    "run_only",
+  ]) {
     res.selectors.forEach((sel) => {
       const mtitle = sel.code.split("\n")[0].trim();
 
@@ -106,6 +117,8 @@ async function updateMenus() {
               case "save_as_file":
                 saveToFile(out, "");
                 break;
+              case "run_only":
+                break;
             }
             iconBlink();
           } catch (e) {
@@ -158,6 +171,9 @@ async function onCommand(cmd) {
       break;
     case "s":
       saveToFile(out, "");
+      break;
+    case "dn":
+      // do nothing
       break;
   }
   iconBlink();

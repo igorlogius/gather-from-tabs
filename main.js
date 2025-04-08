@@ -123,7 +123,7 @@ function createTableRow(feed, add = false) {
       },
       false,
     );
-    runbutton.setAttribute("title", "Run");
+    runbutton.setAttribute("title", "Test Run Script");
     runbutton.append(deletebutton);
     tr.insertCell().appendChild(runbutton);
   } else {
@@ -322,6 +322,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     al.add(new Option("Copy as Text", "ct"));
     al.add(new Option("Copy as HTML", "ch"));
     al.add(new Option("Save to File", "s"));
+    al.add(new Option("Ignore Output", "dn"));
   });
 
   // monitor all dropdown for changes and save the entire tabe into a config on change
@@ -329,6 +330,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   Array.from(document.querySelectorAll("select")).forEach((select) => {
     select.addEventListener("change", saveConfig);
   });
+  document
+    .getElementById("btnOpenShortcutSettings")
+    .addEventListener("click", () => {
+      browser.commands.openShortcutSettings();
+    });
 
   restoreConfig();
 });
