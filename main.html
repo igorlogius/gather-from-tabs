@@ -46,7 +46,14 @@
 </head>
 <body style="background: silver">
   <fieldset>
-    <legend><b>Output</b></legend>
+    <legend>
+      <b
+        ><abbr
+          title="Use the ▶️  button to run a script and its output will be shown in the textarea below"
+          >Debug ▶️ Output (?)</abbr
+        ></b
+      >
+    </legend>
     <textarea id="output">
 Some hints:
  .replace(/(?:\r\n|\r|\n)/gm, ' ')  // remove line breaks
@@ -61,7 +68,13 @@ Some hints:
     <button id="btn_copy_as_html">Copy as HTML</button>
   </fieldset>
   <fieldset>
-    <legend><b>Manage Scripts</b></legend>
+    <legend>
+      <b
+        ><abbr title="Add, edit and test run your set of scripts here"
+          >Scripts (?)</abbr
+        ></b
+      >
+    </legend>
     <fieldset>
       <input
         id="impbtn_wrapper"
@@ -117,13 +130,9 @@ Some hints:
   <fieldset>
     <legend>
       <b
-        >Map Custom Shortcut (Index) to Script/Action (<button
-          id="btnOpenShortcutSettings"
-        >
-          click here
-        </button>
-        to set the shortcuts)</b
-      >
+        >Script-Scope-Actions ( =&gt;
+        <button id="btnOpenShortcutSettings">assign shortcuts</button> &lt;= )
+      </b>
     </legend>
 
     <table id="shortcutconfigs" border="1">
