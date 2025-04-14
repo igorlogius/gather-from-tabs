@@ -28,14 +28,14 @@ async function show_page_menu_ul() {
 
   page_menu_ul.innerHTML = "";
 
-  shortcutconfig.forEach((sel) => {
-    if (sel.format !== "") {
+  shortcutconfig.forEach((sccEl, idx) => {
+    if (sccEl.format !== "") {
       const mtitle =
-        selectors[sel.format].code.split("\n")[0].trim() +
+        selectors[sccEl.format].code.split("\n")[0].trim() +
         " | " +
-        translateScopes(sel.scope) +
+        translateScopes(sccEl.scope) +
         " | " +
-        translateActions(sel.action);
+        translateActions(sccEl.action);
 
       let li = document.createElement("li");
 
@@ -49,9 +49,9 @@ async function show_page_menu_ul() {
 
       btn.innerText = mtitle;
 
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", (evt) => {
         browser.runtime.sendMessage({
-          cmd: "" + sel.format,
+          cmd: "" + idx,
         });
       });
 
