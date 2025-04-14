@@ -135,6 +135,19 @@ browser.browserAction.setBadgeBackgroundColor({ color: "#00000000" });
 browser.storage.onChanged.addListener(updateMenus);
 
 async function onCommand(cmd) {
+  if (cmd === "page-actions") {
+    // tbd.
+    let atabs = await browser.tabs.query({
+      currentWindow: true,
+      active: true,
+    });
+
+    browser.tabs.sendMessage(atabs[0].id, {
+      cmd: "show-page-actions",
+    });
+    return;
+  }
+
   const shortcutconfig = await getFromStorage("object", "shortcutconfig", null);
 
   if (shortcutconfig === null) {
@@ -153,26 +166,24 @@ async function onCommand(cmd) {
       tmp = await browser.tabs.executeScript(tab.id, {
         code: `${selectors[shortcutconfig[cmd].format].code}`,
       });
-
       tmp = tmp[0];
     } catch (e) {
       tmp = e.toString() + " " + tab.url + "\n";
     }
-
     out = tmp + out;
   }
 
   switch (shortcutconfig[cmd].action) {
-    case "ct":
+    case "ct": // copy text
       navigator.clipboard.writeText(out);
       break;
-    case "ch":
+    case "ch": // copy html
       copyToClipboardAsHTML(out);
       break;
-    case "s":
+    case "s": // save to file
       saveToFile(out, "");
       break;
-    case "dn":
+    case "dn": // do nothing
       // do nothing
       break;
   }
@@ -182,5 +193,9 @@ async function onCommand(cmd) {
 browser.browserAction.setBadgeBackgroundColor({ color: "#00000000" });
 
 browser.commands.onCommand.addListener(onCommand);
+
+browser.runtime.onMessage.addListener((data, sender) => {
+  onCommand(data.cmd);
+});
 
 updateMenus();

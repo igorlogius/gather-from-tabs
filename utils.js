@@ -64,6 +64,32 @@ async function copyToClipboardAsHTML(out) {
   base_span.remove();
 }
 
+function translateScopes(scope) {
+  switch (scope) {
+    case "AllTabs":
+      return "Current Windows";
+    case "AllTabsAllWindows":
+      return "All Windows";
+    case "SelectedTabsAllWindows":
+      return "Selected All Windows";
+    case "SelectedTabs":
+      return "Selected Current Windows";
+  }
+}
+
+function translateActions(action) {
+  switch (action) {
+    case "ct":
+      return "Copy Text";
+    case "ch":
+      return "Copy HTML";
+    case "s":
+      return "Save to File";
+    case "dn":
+      return "Ignore Output";
+  }
+}
+
 async function getTabs(scope) {
   let queryObject = {};
   switch (scope) {
