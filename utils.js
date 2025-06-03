@@ -243,3 +243,17 @@ function saveToFile(out, saveFilename) {
   a.click();
   a.remove();
 }
+
+async function downloadAsFiles(urls) {
+  for (const url of urls) {
+    try {
+      await browser.downloads.download({
+        url,
+        conflictAction: "uniquify",
+        saveAs: false,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+}

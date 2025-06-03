@@ -80,7 +80,7 @@ function createTableRow(feed, add = false) {
       "runButton",
       async function () {
         let tmp = "";
-        let out = "";
+        let out = [];
 
         let tabs = await browser.tabs.query({
           active: false,
@@ -111,15 +111,18 @@ function createTableRow(feed, add = false) {
             tmp = e.toString() + " " + tab.url + "\n";
           }
 
-          out = tmp + out;
+          //out = tmp + out;
+          out.push(tmp);
         }
-        document.querySelector("#output").value = out;
+        document.querySelector("#output").value = out.join("");
 
+        /*
         try {
-          await navigator.clipboard.writeText(out);
+          await navigator.clipboard.writeText(out.join(""));
         } catch (e) {
           // noop
         }
+        */
       },
       false,
     );
@@ -321,7 +324,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     al.add(new Option("-- Action --", ""));
     al.add(new Option("Copy as Text", "ct"));
     al.add(new Option("Copy as HTML", "ch"));
-    al.add(new Option("Save to File", "s"));
+    al.add(new Option("Save Output as File", "s"));
+    al.add(new Option("Download as Files", "dl"));
     al.add(new Option("Ignore Output", "dn"));
   });
 

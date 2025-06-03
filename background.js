@@ -31,7 +31,13 @@ async function updateMenus() {
 
   browser.menus.create({
     id: "save_as_file",
-    title: "Save as File",
+    title: "Save Output to File",
+    contexts: ["tab", "page"],
+  });
+
+  browser.menus.create({
+    id: "download_as_files",
+    title: "Download as Files",
     contexts: ["tab", "page"],
   });
 
@@ -60,6 +66,7 @@ async function updateMenus() {
     "copy_as_html",
     "copy_as_text",
     "save_as_file",
+    "download_as_files",
     "run_only",
   ]) {
     res.selectors.forEach((sel) => {
@@ -71,7 +78,7 @@ async function updateMenus() {
         parentId: menu_parent,
         onclick: async (info, tab) => {
           let tmp = "";
-          let out = "";
+          let out = [];
           let tabs = [];
 
           if (typeof info.frameId === "undefined") {
@@ -103,19 +110,23 @@ async function updateMenus() {
               tmp = e.toString() + " " + tab.url + "\n";
             }
 
-            out = tmp + out;
+            //out = tmp + out;
+            out.push(tmp);
           }
 
           try {
             switch (menu_parent) {
               case "copy_as_text":
-                navigator.clipboard.writeText(out);
+                navigator.clipboard.writeText(out.join(""));
                 break;
               case "copy_as_html":
-                copyToClipboardAsHTML(out);
+                copyToClipboardAsHTML(out.join(""));
                 break;
               case "save_as_file":
-                saveToFile(out, "");
+                saveToFile(out.join(""), "");
+                break;
+              case "download_as_files":
+                downloadAsFiles(out);
                 break;
               case "run_only":
                 break;
@@ -157,7 +168,7 @@ async function onCommand(cmd) {
   const selectors = await getFromStorage("object", "selectors", []);
 
   let tmp;
-  let out = "";
+  let out = [];
 
   const tabs = await getTabs(shortcutconfig[cmd].scope);
 
@@ -170,18 +181,22 @@ async function onCommand(cmd) {
     } catch (e) {
       tmp = e.toString() + " " + tab.url + "\n";
     }
-    out = tmp + out;
+    //out = tmp + out;
+    out.push(tmp);
   }
 
   switch (shortcutconfig[cmd].action) {
     case "ct": // copy text
-      navigator.clipboard.writeText(out);
+      navigator.clipboard.writeText(out.join(""));
       break;
     case "ch": // copy html
-      copyToClipboardAsHTML(out);
+      copyToClipboardAsHTML(out.join(""));
       break;
     case "s": // save to file
-      saveToFile(out, "");
+      saveToFile(out.join(""), "");
+      break;
+    case "dl": // do nothing
+      downloadAsFiles(out);
       break;
     case "dn": // do nothing
       // do nothing

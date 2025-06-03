@@ -63,6 +63,12 @@
   },
   "manifest_version": 2,
   "name": "Gather from Tabs",
-  "permissions": ["<all_urls>", "clipboardWrite", "menus", "storage"],
-  "version": "1.3.22"
+  "permissions": [
+    "<all_urls>",
+    "clipboardWrite",
+    "menus",
+    "storage",
+    "downloads"
+  ],
+  "version": "1.4.22"
 }
